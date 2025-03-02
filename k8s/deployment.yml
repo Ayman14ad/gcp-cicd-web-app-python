@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gcp-cicd-web-app-python
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gcp-cicd-web-app-python
+  template:
+    metadata:
+      labels:
+        app: gcp-cicd-web-app-python
+    spec:
+      containers:
+      - name: gcp-cicd-web-app-python
+        image: gcr.io/my-cicd-gcp-project/gcp-cicd-web-app-python
+        ports:
+        - containerPort: 8080

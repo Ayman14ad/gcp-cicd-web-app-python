@@ -1,0 +1,33 @@
+steps:
+  # Step 1: Install dependencies
+  - name: 'python:3.9-slim'
+    entrypoint: 'pip'
+    args: ['install', '--no-cache-dir', '-r', 'requirements.txt']
+
+  # Step 2: Run linting (optional, using flake8)
+  - name: 'python:3.9-slim'
+    entrypoint: 'bash'
+    args: ['-c', 'pip install flake8 && flake8 . || echo "Linting skipped"']
+
+  # Step 3: Run tests (placeholder)
+  - name: 'python:3.9-slim'
+    entrypoint: 'bash'
+    args: ['-c', 'echo "Tests skipped"']
+
+  # Step 4: Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/my-cicd-gcp-project/gcp-cicd-web-app-python', '.']
+
+  # Step 5: Push image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/my-cicd-gcp-project/gcp-cicd-web-app-python']
+
+  # Step 6: Deploy to GKE
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['apply', '-f', 'k8s/']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=gcp-cicd-cluster'
+
+images:
+  - 'gcr.io/my-cicd-gcp-project/gcp-cicd-web-app-python'
