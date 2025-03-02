@@ -31,3 +31,6 @@ steps:
 
 images:
   - 'gcr.io/my-cicd-gcp-project/gcp-cicd-web-app-python'
+
+  # Specify the logs bucket
+logsBucket: 'gs://my-cicd-gcp-project-logs'
